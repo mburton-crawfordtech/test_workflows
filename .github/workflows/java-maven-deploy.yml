@@ -6,6 +6,9 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
 
     steps:
       # checkout the code 
@@ -16,7 +19,6 @@ jobs:
       uses: mburton-crawfordtech/test_workflows/java-maven-build-action@main
       
     - name: Publish to GitHub Packages Apache Maven
-      # run: mvn deploy 
       run: mvn deploy -s $GITHUB_WORKSPACE/settings.xml
       env:
         GITHUB_TOKEN: ${{ github.token }}  
