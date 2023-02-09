@@ -10,8 +10,7 @@ jobs:
     steps:
       # Use the location in the repository (without action.yml)
     - name: Run custom action
-      uses: ./.github/actions/my-custom-action
-      # uses: ./.github/actions/my-custom-action
+      uses: ./.github/actions
       
       # - name: Publish to GitHub Packages Apache Maven
         # run: mvn deploy 
