@@ -39,7 +39,7 @@ jobs:
         working-directory: ${{ inputs.working-directory }}
 
     steps:
-    - run: echo ${{ github }}
+    - run: echo '${{ toJSON(github) }}'
     - name: Checkout Code
       uses: actions/checkout@v3
 
