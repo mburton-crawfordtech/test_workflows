@@ -1,0 +1,24 @@
+name: 'Hello World'
+description: 'Greet someone'
+inputs:
+  who-to-greet:  # id of input
+    description: 'Who to greet'
+    required: true
+    default: 'World'
+outputs:
+  random-number:
+    description: "Random number"
+    value: ${{ steps.random-number-generator.outputs.random-number }}
+runs:
+  using: "composite"
+  steps:
+    # Setup the JDK with caching for Maven
+    - name: Set up JDK ${{ inputs.java-version }}
+      uses: actions/setup-java@v3
+      with:
+        java-version: ${{ inputs.java-version }}
+        distribution: 'temurin'
+        cache: maven
+    - name: Build with Maven
+      run: mvn --batch-mode clean package ${{ inputs.maven-params }} --file pom.xml
+      shell: bash

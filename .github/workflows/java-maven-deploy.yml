@@ -10,7 +10,7 @@ jobs:
     steps:
       # Use the location in the repository (without action.yml)
     - name: Run custom action
-      uses: mburton-crawfordtech/test_workflows/.github/actions@main
+      uses: mburton-crawfordtech/test_workflows/java-maven-build-action@main
       
       # - name: Publish to GitHub Packages Apache Maven
         # run: mvn deploy 
