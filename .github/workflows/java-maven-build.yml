@@ -43,15 +43,18 @@ jobs:
     - name: Checkout Code
       uses: actions/checkout@v3
 
+    - name: Run custom action
+      uses: mburton-crawfordtech/test_workflows/java-maven-build-action@main
+
     # Setup the JDK with caching for Maven
-    - name: Set up JDK ${{ inputs.java-version }}
-      uses: actions/setup-java@v3
-      with:
-        java-version: ${{ inputs.java-version }}
-        distribution: 'temurin'
-        cache: maven
-    - name: Build with Maven
-      run: mvn --batch-mode clean package ${{ inputs.maven-params }} --file pom.xml
+    # - name: Set up JDK ${{ inputs.java-version }}
+    #   uses: actions/setup-java@v3
+    #   with:
+    #     java-version: ${{ inputs.java-version }}
+    #     distribution: 'temurin'
+    #     cache: maven
+    # - name: Build with Maven
+    #   run: mvn --batch-mode clean package ${{ inputs.maven-params }} --file pom.xml
 
     # Optional: Uploads the full dependency graph to GitHub to improve the quality of Dependabot alerts this repository can receive
     # - name: Update dependency graph
