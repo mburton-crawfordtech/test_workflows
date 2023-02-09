@@ -8,10 +8,13 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: mburton-crawfordtech/test_workflows/.github/workflows/java-maven-build.yml@main
+      # Use the location in the repository (without action.yml)
+    - name: Run custom action
+      uses: ./.github/actions/my-custom-action
+      # uses: ./.github/actions/my-custom-action
       
-      - name: Publish to GitHub Packages Apache Maven
-        run: mvn deploy 
+      # - name: Publish to GitHub Packages Apache Maven
+        # run: mvn deploy 
         # run: mvn deploy -s $GITHUB_WORKSPACE/settings.xml
         # env:
         #   GITHUB_TOKEN: ${{ github.token }}  
