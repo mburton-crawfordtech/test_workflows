@@ -28,10 +28,10 @@ runs:
         distribution: 'temurin'
         cache: maven
         # server-username: GITHUB_USER_REF  # env variable name for username
-        server-password: GITHUB_TOKEN_REF # env variable name for GitHub Personal Access Token
+        # server-password: GITHUB_TOKEN_REF # env variable name for GitHub Personal Access Token
     - name: Build with Maven
       run: mvn --batch-mode clean package ${{ inputs.maven-params }} --file pom.xml
       shell: bash
-      env:
+      # env:
         # GITHUB_USER_REF: ${{ secrets.GH_PACKAGE_REPO_USERNAME }}
-        GITHUB_TOKEN_REF: ${{ inputs.token }}
+        # GITHUB_TOKEN_REF: ${{ inputs.token }}
