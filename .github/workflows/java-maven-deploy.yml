@@ -1,26 +1,53 @@
-name: Java CI with Maven - deploy
+name: Common Java CI with Maven - deploy
 
 on:
   workflow_call:
+    inputs:
+      # pass in java version to allow different app requiring different java versions to 
+      # reuse the same workflow, default to java 11
+      java-version:
+        required: false
+        type: string
+        default: '11'
+      # working-directory is added to accommodate if the pom file is not in root.
+      #  defaults to '.', current directory
+      working-directory:
+        required: false
+        type: string
+        default: '.'
+      # allowing calling workflows to pass in maven parameter(s)
+      # such as '-Dmaven.test.skip' for certain apps,
+      # default to blank, not to skip test
+      maven-params:
+        required: false
+        type: string
+        default: ''
+      # allowing calling workflows to pass in maven parameter(s)
+      # such as '-Dmaven.test.skip' for certain apps,
+      # default to blank, not to skip test
+      token:
+        required: false
+        type: string
+        default: ''
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
 
-    # permissions:
-    #   contents: read
-    #   packages: write
+    # This sets the working directory at the job level,
+    # defaults to "."
+    defaults:
+      run:
+        working-directory: ${{ inputs.working-directory }}
 
     steps:
-      # checkout the code 
-    - name: Checkout Code
-      uses: actions/checkout@v3
-
     - name: Run custom build action
       uses: mburton-crawfordtech/test_workflows/java-maven-build-action@main
-      
+      with:
+        java-version: ${{ java-version }}
+        maven-params: ${{ maven-params }}
+
     - name: Publish to GitHub Packages Apache Maven
       run: mvn --batch-mode deploy
-      # run: mvn deploy -s $GITHUB_WORKSPACE/settings.xml
       env:
         GITHUB_TOKEN: ${{ github.token }}
