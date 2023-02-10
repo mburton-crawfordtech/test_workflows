@@ -22,13 +22,10 @@ on:
         required: false
         type: string
         default: ''
-      # allowing calling workflows to pass in maven parameter(s)
-      # such as '-Dmaven.test.skip' for certain apps,
-      # default to blank, not to skip test
+    secrets:
+      # allowing passing in secrets
       token:
         required: false
-        type: string
-        default: ''
 
 jobs:
   deploy:
@@ -50,4 +47,5 @@ jobs:
     - name: Publish to GitHub Packages Apache Maven
       run: mvn --batch-mode deploy
       env:
-        GITHUB_TOKEN: ${{ github.token }}
+        # GITHUB_TOKEN: ${{ github.token }}
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
