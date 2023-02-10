@@ -43,7 +43,9 @@ jobs:
       with:
         java-version: ${{ inputs.java-version }}
         maven-params: ${{ inputs.maven-params }}
+        token: ${{ secrets.github.token }}  # for access to internal packages
 
+# TODO - re-run java setup to regenerate settings.xml?
     - name: Publish to GitHub Packages Apache Maven
       run: mvn --batch-mode deploy
       env:
