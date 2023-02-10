@@ -38,14 +38,15 @@ jobs:
         working-directory: ${{ inputs.working-directory }}
 
     steps:
-    - name: Run custom build action
+    - name: Run Java Maven build action
       uses: mburton-crawfordtech/test_workflows/java-maven-build-action@main
       with:
         java-version: ${{ inputs.java-version }}
         maven-params: ${{ inputs.maven-params }}
-        token: ${{ secrets.github.token }}  # for access to internal packages
+        token: ${{ secrets.github.token }}  # for access to private packages
 
-# TODO - re-run java setup to regenerate settings.xml - This will reset the permissions
+    # re-run java setup to regenerate settings.xml
+    # This will reset the permissions of GITHUB_TOKEN
     # Setup the JDK with caching for Maven
     - name: Set up JDK ${{ inputs.java-version }}
       uses: actions/setup-java@v3
@@ -54,8 +55,7 @@ jobs:
         distribution: 'temurin'
         cache: maven
 
-    - name: Publish to GitHub Packages Apache Maven
-      run: mvn --batch-mode deploy
+    - name: Publish to GitHub Maven Packages 
+      run: mvn --batch-mode deploy ${{ inputs.maven-params }} --file pom.xml
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        # GITHUB_TOKEN: ${{ github.token }}

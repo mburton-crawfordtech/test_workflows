@@ -33,6 +33,5 @@ runs:
       run: mvn --batch-mode clean package ${{ inputs.maven-params }} --file pom.xml
       shell: bash
       env:
-        # GITHUB_USER_REF: 'mburton-crawfordtech'
         # GITHUB_USER_REF: ${{ secrets.GH_PACKAGE_REPO_USERNAME }}
         GITHUB_TOKEN_REF: ${{ inputs.token }}
