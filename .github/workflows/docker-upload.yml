@@ -45,7 +45,16 @@ jobs:
 
     steps:
       - run: echo '${{ toJSON(github) }}'
-        
+
+      # setup env vars
+      ## Get the repository name and convert it to lowercase
+      ##  because the Docker image name must be in all lowercase.
+      - name: downcase GITHUB_REPOSITORY for Docker image name
+        run: echo "IMAGE_NAME=${GITHUB_REPOSITORY,,}" >>${GITHUB_ENV}
+      ## get just the project name part.
+      - name: get project name
+        run: echo "PROJECT=${IMAGE_NAME#*/}" >>${GITHUB_ENV}
+                
       - name: Run Java Maven build action
         uses: mburton-crawfordtech/test_workflows/java-maven-build-action@main
         with:
