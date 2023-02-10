@@ -46,6 +46,14 @@ jobs:
         token: ${{ secrets.github.token }}  # for access to internal packages
 
 # TODO - re-run java setup to regenerate settings.xml?
+    # Setup the JDK with caching for Maven
+    - name: Set up JDK ${{ inputs.java-version }}
+      uses: actions/setup-java@v3
+      with:
+        java-version: ${{ inputs.java-version }}
+        distribution: 'temurin'
+        cache: maven
+
     - name: Publish to GitHub Packages Apache Maven
       run: mvn --batch-mode deploy
       env:
