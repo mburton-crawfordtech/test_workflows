@@ -45,7 +45,7 @@ jobs:
         maven-params: ${{ inputs.maven-params }}
         token: ${{ secrets.github.token }}  # for access to internal packages
 
-# TODO - re-run java setup to regenerate settings.xml?
+# TODO - re-run java setup to regenerate settings.xml - This will reset the permissions
     # Setup the JDK with caching for Maven
     - name: Set up JDK ${{ inputs.java-version }}
       uses: actions/setup-java@v3
