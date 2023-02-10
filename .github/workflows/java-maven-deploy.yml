@@ -43,9 +43,9 @@ jobs:
     steps:
     - name: Run custom build action
       uses: mburton-crawfordtech/test_workflows/java-maven-build-action@main
-      # with:
-      #   java-version: ${{ java-version }}
-      #   maven-params: ${{ maven-params }}
+      with:
+        java-version: ${{ inputs.java-version }}
+        maven-params: ${{ inputs.maven-params }}
 
     - name: Publish to GitHub Packages Apache Maven
       run: mvn --batch-mode deploy

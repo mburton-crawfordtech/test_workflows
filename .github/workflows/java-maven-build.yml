@@ -46,9 +46,9 @@ jobs:
 
     - name: Run custom action build action
       uses: mburton-crawfordtech/test_workflows/java-maven-build-action@main
-      # with:
-      #   java-version: ${{ java-version }}
-      #   maven-params: ${{ maven-params }}
+      with:
+        java-version: ${{ inputs.java-version }}
+        maven-params: ${{ inputs.maven-params }}
 
     # Optional: Uploads the full dependency graph to GitHub to improve the quality of Dependabot alerts this repository can receive
     # - name: Update dependency graph
