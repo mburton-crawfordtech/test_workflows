@@ -51,7 +51,7 @@ jobs:
         cache: maven
         server-password: GITHUB_TOKEN_REF # env variable name for GitHub Personal Access Token
     # Just get the dependencies. Does this using the passed in token so it can access other private repos.
-    - name: Build with Maven
+    - name: Get dependencies
       run: mvn --batch-mode dependency:resolve --file pom.xml
       shell: bash
       env:
@@ -73,7 +73,7 @@ jobs:
         git config user.email "actions@github.com"
         git config user.name "GitHub Actions"
 
-    - name: Publish to GitHub Maven Packages 
+    - name: Make release and publish Maven packages to GitHub 
       run: mvn --batch-mode release:prepare release:perform ${{ inputs.maven-params }} --file pom.xml
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
