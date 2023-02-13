@@ -38,12 +38,20 @@ jobs:
         working-directory: ${{ inputs.working-directory }}
 
     steps:
-    - name: Run Java Maven build action
-      uses: mburton-crawfordtech/test_workflows/java-maven-build-action@main
+    # Setup the JDK with caching for Maven
+    - name: Set up JDK ${{ inputs.java-version }}
+      uses: actions/setup-java@v3
       with:
         java-version: ${{ inputs.java-version }}
-        maven-params: ${{ inputs.maven-params }}
-        token: ${{ secrets.github.token }}  # for access to private packages
+        distribution: 'temurin'
+        cache: maven
+        server-password: GITHUB_TOKEN_REF # env variable name for GitHub Personal Access Token
+    # Just get the dependencies. Does this using the passed in token so it can access other private repos.
+    - name: Build with Maven
+      run: mvn --batch-mode dependency:resolve --file pom.xml
+      shell: bash
+      env:
+        GITHUB_TOKEN_REF: ${{ inputs.token }}
 
     # re-run java setup to regenerate settings.xml
     # This will reset the permissions of GITHUB_TOKEN
@@ -54,6 +62,7 @@ jobs:
         java-version: ${{ inputs.java-version }}
         distribution: 'temurin'
         cache: maven
+
     # Set user info - needed for the commit
     - name: Configure Git User
       run: |
