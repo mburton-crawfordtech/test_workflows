@@ -54,6 +54,11 @@ jobs:
         java-version: ${{ inputs.java-version }}
         distribution: 'temurin'
         cache: maven
+    # Set user info - needed for the commit
+    - name: Configure Git User
+      run: |
+        git config user.email "actions@github.com"
+        git config user.name "GitHub Actions"
 
     - name: Publish to GitHub Maven Packages 
       run: mvn --batch-mode release:prepare release:perform ${{ inputs.maven-params }} --file pom.xml
