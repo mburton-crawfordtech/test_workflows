@@ -22,6 +22,12 @@ on:
         required: false
         type: string
         default: ''
+      # context-directory is the context (directory) used while building the Docker image.
+      #  defaults to '.', current directory
+      context-directory:
+        required: false
+        type: string
+        default: '.'
     secrets:
       # allowing passing in secrets
       token:
@@ -33,9 +39,6 @@ env:
 jobs:
   image_build:
     runs-on: ubuntu-latest
-    # permissions:
-    #   contents: read
-    #   packages: write
 
     # This sets the working directory at the job level,
     # defaults to "."
@@ -54,7 +57,7 @@ jobs:
       ## get just the project name part.
       - name: get project name
         run: echo "PROJECT=${IMAGE_NAME#*/}" >>${GITHUB_ENV}
-                
+
       - name: Run Java Maven build action
         uses: mburton-crawfordtech/test_workflows/java-maven-build-action@main
         with:
@@ -62,6 +65,7 @@ jobs:
           maven-params: ${{ inputs.maven-params }}
           token: ${{ secrets.github.token }}  # for access to private packages
 
+      # Get the POM files version to be used as the Docker image version
       - name: Get Maven project version
         id: version
         run: |
@@ -75,13 +79,14 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
+      # Needed for Docker caching
       - uses: docker/setup-buildx-action@v2
 
       - name: Build and push Docker image
         id: docker_build
         uses: docker/build-push-action@v4
         with:
-          context: .
+          context: ${{ inputs.context-directory}}
           push: true
           tags: |
             ${{ env.DOCKER_REGISTRY }}/${{ env.IMAGE_NAME }}:${{ steps.version.outputs.version }}
