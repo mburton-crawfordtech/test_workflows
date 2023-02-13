@@ -41,7 +41,7 @@ jobs:
     # Checkout the code
     - name: Checkout Code
       uses: actions/checkout@v3
-      
+
     # Setup the JDK with caching for Maven
     - name: Set up JDK ${{ inputs.java-version }}
       uses: actions/setup-java@v3
@@ -55,7 +55,7 @@ jobs:
       run: mvn --batch-mode dependency:resolve --file pom.xml
       shell: bash
       env:
-        GITHUB_TOKEN_REF: ${{ inputs.token }}
+        GITHUB_TOKEN_REF: ${{ secrets.token }}
 
     # re-run java setup to regenerate settings.xml
     # This will reset the permissions of GITHUB_TOKEN
