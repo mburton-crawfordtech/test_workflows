@@ -43,7 +43,7 @@ jobs:
       with:
         java-version: ${{ inputs.java-version }}
         maven-params: ${{ inputs.maven-params }}
-        token: ${{ secrets.github.token }}  # for access to private packages
+        token: ${{ secrets.token }}  # for access to internal packages
 
     # re-run java setup to regenerate settings.xml
     # This will reset the permissions of GITHUB_TOKEN

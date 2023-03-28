@@ -47,7 +47,7 @@ jobs:
         working-directory: ${{ inputs.working-directory }}
 
     steps:
-      - run: echo '${{ toJSON(github) }}'
+      # - run: echo '${{ toJSON(github) }}'
 
       # setup env vars
       ## Get the repository name and convert it to lowercase
@@ -63,13 +63,13 @@ jobs:
         with:
           java-version: ${{ inputs.java-version }}
           maven-params: ${{ inputs.maven-params }}
-          token: ${{ secrets.github.token }}  # for access to private packages
+          token: ${{ secrets.token }}  # for access to internal packages
 
       # Get the POM files version to be used as the Docker image version
       - name: Get Maven project version
         id: version
         run: |
-          echo "version=$(mvn -q -Dexec.executable=echo -Dexec.args='${project.version}' --non-recursive exec:exec)" >> $GITHUB_OUTPUT
+          echo "version=$(mvn -q ${{ inputs.maven-params }} -Dexec.executable=echo -Dexec.args='${project.version}' --non-recursive exec:exec)" >> $GITHUB_OUTPUT
           echo ${{ steps.version.outputs.version }}
 
       - name: Log in to the Container registry
